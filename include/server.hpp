@@ -40,7 +40,7 @@ or implied, of CowboyCoders.
 
 #include "packetizer.hpp"
 #include "file_reader.hpp"
-#include "buffer.hpp"
+#include "cow/utils/buffer.hpp"
 
 namespace libcow
 {
