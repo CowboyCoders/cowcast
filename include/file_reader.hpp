@@ -38,28 +38,68 @@ namespace libcow
 {
     namespace multicast
     {
+       /**
+        * This class is used by the libcow::multicast::server in order to read pieces
+        * from disk and send them via multicast. The file reader will automatically
+        * create multicast packets that the libcow::multicast::server can use.
+        */
         class file_reader
         {
         public:
+           /**
+            * Creates a new libcow::multicast::file_reader that will read data
+            * from the specified file.
+            * @param piece_size The size of each BitTorrent piece for the file.
+            * @param packet_size The size of each packet to send via multicast.
+            * @param file_uri A pointer to the file to read from.
+            */
             file_reader(std::size_t piece_size,
                         std::size_t packet_size,
                         const char *file_uri);
-
+           /**
+            * Returns the next packet to send via multicast.
+            * Since we need 1 byte of free space in the buffer to
+            * store protocal data, a new buffer is returned.
+            * @param buf The buffer to fill with the next packet.
+            * @return The next packet in a buffer.
+            */
             utils::buffer next(const utils::buffer& buf);
 
+           /**
+            * Returns the current BitTorrent piece that the file reader is
+            * reading from.
+            * @return The current piece id.
+            */
             std::size_t current_piece() const;
 
+           /**
+            * Returns whether or not we have reached the end of the file.
+            * @return True if we have reached the end of the file, otherwise false.
+            */
             bool eof() const {
                 return file_.eof();
             }
 
+           /**
+            * Returns whether or not the file reader could open the file.
+            * @return True if the file could be opened, otherwise false.
+            */
             bool exists() const {
                 return exists_;
             }
 
+           /**
+            * Returns the packet size that this file reader uses.
+            * @return The packet size.
+            */
             int packet_size() const {
                 return packet_size_;
             }
+            
+           /**
+            * Returns the piece size that this file reader uses.
+            * @return The piece size.
+            */
             size_t piece_size() const {
                 return piece_size_;
             }
