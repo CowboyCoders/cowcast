@@ -39,19 +39,16 @@ void fail_with_error(const std::string& msg, int status) {
  * Multicast server entry point.
  */
 int main(int argc, char* argv[]) {
-    if(argc < 5)
-        fail_with_error("Usage: multicast_server <file_path> <movie_id> <bitrate> <multicast group ip> [port]", 1);
+    if(argc < 7)
+        fail_with_error("Usage: multicast_server <file_path> <movie_id> <piece_size> <bitrate> <multicast group ip> <port>", 1);
 
-    size_t piece_size = 1024*256;
     std::string file_path(argv[1]);
     int id = atoi(argv[2]);
-    int bitrate = atoi(argv[3]);
-    std::string ip(argv[4]);
-    int port = 1337;
+    int piece_size = atoi(argv[3]);
+    int bitrate = atoi(argv[4]);
+    std::string ip(argv[5]);
+    int port = atoi(argv[6]);
     size_t protocol_version = 1;
-
-    if(argc > 5)
-        port = atoi(argv[5]);
 
     if(id < 0)
         fail_with_error("Error: Invalid, negative id.", 1);
