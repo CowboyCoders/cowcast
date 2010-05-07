@@ -49,7 +49,6 @@ namespace libcow
                 socket_(io_service_, endpoint_.protocol()),
                 timer_(io_service_),
                 reader_(piece_size,packet_size,file_uri),                
-                pack_(sync_frequency),
                 movie_id_(movie_id),
                 bitrate_(bitrate),
                 protocol_id_(protocol_version)
@@ -57,7 +56,8 @@ namespace libcow
             // A bitrate of 0 is nonsensical.
             assert(bitrate != 0);
             assert(bitrate >= packet_size*8);
-
+            
+            pack_.set_sync_frequency(sync_frequency);
             sync_data_ = new char[pack_.sync_packet_size()];
             movie_data_ = new char[reader_.packet_size()+1];
 
