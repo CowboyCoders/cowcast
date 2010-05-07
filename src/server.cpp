@@ -34,32 +34,32 @@ namespace libcow
 {
     namespace multicast
     {
-        server::server(const char *file_uri,
-                       std::size_t movie_id,
-                       const std::string& multicast_ip,
-                       const short& port,
-                       std::size_t piece_size,
-                       std::size_t bitrate,
-                       std::size_t protocol_version) :
-                endpoint_(boost::asio::ip::address::from_string(multicast_ip), port),
+        server::server(std::string multicast_ip,
+                       size_t multicast_port,
+                       std::string listen_ip,
+                       size_t packet_size,
+                       size_t movie_id,
+                       size_t bitrate,
+                       const char *file_uri,
+                       size_t piece_size,
+                       size_t protocol_version) :
+                endpoint_(boost::asio::ip::address::from_string(multicast_ip), multicast_port),
                 io_service_(),
                 socket_(io_service_, endpoint_.protocol()),
                 timer_(io_service_),
-                reader_(piece_size,1024,file_uri),                
+                reader_(piece_size,packet_size,file_uri),                
                 movie_id_(movie_id),
                 bitrate_(bitrate),
                 protocol_id_(protocol_version)
         {
-            size_t packetsize = 1024;
-
             // A bitrate of 0 is nonsensical.
             assert(bitrate != 0);
-            assert(bitrate >= packetsize*8);
+            assert(bitrate >= packet_size*8);
 
             sync_data_ = new char[pack_.sync_packet_size()];
             movie_data_ = new char[reader_.packet_size()+1];
 
-            wait_msec_ = 1000/(bitrate/(packetsize*8));
+            wait_msec_ = 1000/(bitrate/(packet_size*8));
         }
 
         server::~server()

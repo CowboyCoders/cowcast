@@ -39,31 +39,57 @@ void fail_with_error(const std::string& msg, int status) {
  * Multicast server entry point.
  */
 int main(int argc, char* argv[]) {
-    if(argc < 7)
-        fail_with_error("Usage: multicast_server <file_path> <movie_id> <piece_size> <bitrate> <multicast group ip> <port>", 1);
+    if(argc < 9) {
+        std::string usage = "Usage: multicast_server "
+                            "<multicast_ip_address> "
+                            "<multicast_port> "
+                            "<multicast_listen_address> "
+                            "<multicast_packet_size> "
+                            "<movie_id> "
+                            "<movie_bitrate> "
+                            "<file_path> "
+                            "<bittorrent_piece_size> ";
+        fail_with_error(usage,1);
+    }
 
-    std::string file_path(argv[1]);
-    int id = atoi(argv[2]);
-    int piece_size = atoi(argv[3]);
-    int bitrate = atoi(argv[4]);
-    std::string ip(argv[5]);
-    int port = atoi(argv[6]);
+    std::string ip(argv[1]);
+    int port = atoi(argv[2]);
+    std::string listen_ip(argv[3]);
+    int packet_size(atoi(argv[4]));
+    int id = atoi(argv[5]);
+    int bitrate = atoi(argv[6]);
+    std::string file_path(argv[7]);
+    int piece_size = atoi(argv[8]);
     size_t protocol_version = 1;
 
-    if(id < 0)
+    if(id < 0) {
         fail_with_error("Error: Invalid, negative id.", 1);
+    }
 
-    if(bitrate <= 0)
+    if(packet_size <= 0) {
+        fail_with_error("Error: multicast packet size must be larger than zero",1);
+    }
+
+    if(piece_size <= 0) {
+        fail_with_error("Error: bittorrent piece size must be larger than zero",1);
+    }
+
+    if(bitrate <= 0) {
         fail_with_error("Error: bitrate must be non-zero and positive", 1);
-
-    if(port <= 0)
+    }
+    
+    if(port <= 0) {
         fail_with_error("Invalid port", 1);
+    }
 
-    libcow::multicast::server s(file_path.c_str(),
+    libcow::multicast::server s(ip,
+                                static_cast<size_t>(port),
+                                listen_ip,
+                                static_cast<size_t>(packet_size),
                                 static_cast<size_t>(id),
-                                ip, static_cast<size_t>(port),
-                                static_cast<size_t>(piece_size),
                                 static_cast<size_t>(bitrate),
+                                file_path.c_str(),
+                                static_cast<size_t>(piece_size),
                                 protocol_version);
 
     BOOST_LOG_TRIVIAL(info) << "Starting transmission of " << file_path << " [" << id << "]";

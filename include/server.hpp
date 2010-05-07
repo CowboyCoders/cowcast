@@ -53,24 +53,28 @@ namespace libcow
              * Constructos a multicast server which broadcast movie data
              * in realtime from a specified file.
              *
-             * @param file_uri The path to the file which should be broadcasted
-             * @param movie_id The unique id for the movie
              * @param multicast_ip Where the data will be broadcasted to
-             * @param port The port for the multicast connection
-             * @param piece_size The size of a BitTorrent for the given file (in KB)
+             * @param multicast_port The port for the multicast connection
+             * @param listen_ip ? 
+             * @param packet_size The size of a multicast packet (in KB)
+             * @param movie_id The unique id for the movie
              * @param bitrate The bitrate for the movie (in kbit/s)
+             * @param file_uri The path to the file which should be broadcasted
+             * @param piece_size The size of a BitTorrent for the given file (in KB)
              * @param protocol_version The protocol version which should used
              *
              * @author Erik Helin & Felix Rios
              * @version 1.0
              */
-            server(const char *file_uri,
-                   std::size_t movie_id,
-                   const std::string& multicast_ip,
-                   const short& port,
-                   std::size_t piece_size,
-                   std::size_t bitrate,
-                   std::size_t protocol_version);
+            server(std::string multicast_ip,
+                           size_t multicast_port,
+                           std::string listen_ip,
+                           size_t packet_size,
+                           size_t movie_id,
+                           size_t bitrate,
+                           const char *file_uri,
+                           size_t piece_size,
+                           size_t protocol_version);
 
             /**
              * Frees the allocated data

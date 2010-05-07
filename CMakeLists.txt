@@ -1,9 +1,11 @@
 project(MULTICAST_SERVER)
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 2.8)
 
 set(CMAKE_BUILD_TYPE Debug)
 set(PACKETIZER_SOURCE_DIR ../packetizer)
 set(UTILS_SOURCE_DIR ../utils)
+
+file(COPY ${MULTICAST_SERVER_SOURCE_DIR}/src/start_multicast_server.sh DESTINATION .)
 
 include_directories(
     ${PACKETIZER_SOURCE_DIR}/include
