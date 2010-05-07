@@ -62,6 +62,7 @@ namespace libcow
              * @param file_uri The path to the file which should be broadcasted
              * @param piece_size The size of a BitTorrent for the given file (in KB)
              * @param protocol_version The protocol version which should used
+             * @param sync_frequence The frequency for sending sync packets
              *
              * @author Erik Helin & Felix Rios
              * @version 1.0
@@ -74,7 +75,8 @@ namespace libcow
                            size_t bitrate,
                            const char *file_uri,
                            size_t piece_size,
-                           size_t protocol_version);
+                           size_t protocol_version,
+                           size_t sync_frequencey);
 
             /**
              * Frees the allocated data

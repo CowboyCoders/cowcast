@@ -90,7 +90,8 @@ int main(int argc, char* argv[]) {
                                 static_cast<size_t>(bitrate),
                                 file_path.c_str(),
                                 static_cast<size_t>(piece_size),
-                                protocol_version);
+                                protocol_version,
+                                static_cast<size_t>((piece_size/packet_size)+2));
 
     BOOST_LOG_TRIVIAL(info) << "Starting transmission of " << file_path << " [" << id << "]";
     s.start();

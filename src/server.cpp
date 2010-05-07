@@ -42,12 +42,14 @@ namespace libcow
                        size_t bitrate,
                        const char *file_uri,
                        size_t piece_size,
-                       size_t protocol_version) :
+                       size_t protocol_version,
+                       size_t sync_frequency) :
                 endpoint_(boost::asio::ip::address::from_string(multicast_ip), multicast_port),
                 io_service_(),
                 socket_(io_service_, endpoint_.protocol()),
                 timer_(io_service_),
                 reader_(piece_size,packet_size,file_uri),                
+                pack_(sync_frequency),
                 movie_id_(movie_id),
                 bitrate_(bitrate),
                 protocol_id_(protocol_version)
