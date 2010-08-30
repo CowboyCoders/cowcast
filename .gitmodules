@@ -1,0 +1,3 @@
+[submodule "libs/cow_utils"]
+	path = libs/cow_utils
+	url = git@github.com:CowboyCoders/cow_utils.git
