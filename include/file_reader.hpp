@@ -32,7 +32,7 @@ or implied, of CowboyCoders.
 #include <string>
 #include <fstream>
 
-#include "cow/utils/buffer.hpp"
+#include "buffer.hpp"
 
 namespace libcow
 {
